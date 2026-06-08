@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Calendar, Dumbbell, Heart, Zap, TrendingUp, MessageCircle } from "lucide-react";
+import { BlocCard } from "@/components/BlocModal";
 
 const BLOC_COLORS: Record<string, string> = {
   "#4ade80": "border-green-400 text-green-400 bg-green-400/10",
@@ -29,7 +30,7 @@ export default async function DashboardPage() {
         seances: {
           include: {
             logs: { orderBy: { date: "desc" }, take: 1 },
-            exercices: { orderBy: { ordre: "asc" }, take: 1 },
+            exercices: { orderBy: { ordre: "asc" } },
           },
         },
       },
@@ -183,26 +184,9 @@ export default async function DashboardPage() {
           Programme
         </h2>
         <div className="space-y-2">
-          {blocs.map((bloc) => {
-            const done = bloc.seances.filter((s) => s.logs.length > 0).length;
-            const total = bloc.seances.length;
-            const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-            return (
-              <div key={bloc.id} className="rounded-xl bg-zinc-900 border border-zinc-800 p-3 flex items-center gap-3">
-                <div className={`h-2.5 w-2.5 rounded-full flex-shrink-0 ${getBlocDot(bloc.couleur)}`} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-zinc-200">Bloc {bloc.numero} — {bloc.nom}</span>
-                    <span className="text-xs text-zinc-500">S{bloc.semaines}</span>
-                  </div>
-                  <div className="h-1 rounded-full bg-zinc-800">
-                    <div className="h-1 rounded-full bg-orange-500 transition-all" style={{ width: `${pct}%` }} />
-                  </div>
-                </div>
-                <span className="text-xs text-zinc-500 flex-shrink-0">{done}/{total}</span>
-              </div>
-            );
-          })}
+          {blocs.map((bloc) => (
+            <BlocCard key={bloc.id} bloc={bloc} />
+          ))}
         </div>
       </div>
 
