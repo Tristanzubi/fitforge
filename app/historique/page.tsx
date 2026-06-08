@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { DeleteLogButton } from "@/components/DeleteLogButton";
 
 const DOT_COLORS: Record<string, string> = {
   "#4ade80": "bg-green-400",
@@ -48,7 +49,10 @@ export default async function HistoriquePage() {
                       {new Date(log.date).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
                     </p>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-zinc-600 shrink-0" />
+                  <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.preventDefault()}>
+                    <DeleteLogButton logId={log.id} seanceId={log.seanceId} />
+                    <ChevronRight className="h-4 w-4 text-zinc-600" />
+                  </div>
                 </div>
                 <div className="mt-2 flex items-center gap-3 text-xs text-zinc-500 pl-5">
                   {log.genouDouleur > 0 && <span className="text-red-400">🦵 {log.genouDouleur}/3</span>}
