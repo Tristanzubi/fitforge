@@ -49,7 +49,7 @@ export default async function HistoriquePage() {
                       {new Date(log.date).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.preventDefault()}>
+                  <div className="flex items-center gap-2 shrink-0">
                     <DeleteLogButton logId={log.id} seanceId={log.seanceId} />
                     <ChevronRight className="h-4 w-4 text-zinc-600" />
                   </div>
