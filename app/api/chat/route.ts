@@ -70,7 +70,7 @@ ${JSON.stringify(recentLogs.map((l: { date: Date; fatigue: number; genouDouleur:
 })), null, 2)}`;
 
     const messages: Array<{ role: "user" | "assistant"; content: string }> = [
-      ...history.map(m => ({ role: m.role as "user" | "assistant", content: m.content })),
+      ...history.map((m: { role: string; content: string }) => ({ role: m.role as "user" | "assistant", content: m.content })),
       { role: "user", content: message },
     ];
 
