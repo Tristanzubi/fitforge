@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Bloc {
+  id       String   @id @default(cuid())
+  numero   Int
+  nom      String
+  semaines String
+  couleur  String
+  seances  Seance[]
+}
+
+model Seance {
+  id        String      @id @default(cuid())
+  nom       String
+  type      String
+  freq      String
+  note      String?
+  jour      String      @default("")
+  lieu      String      @default("salle")
+  blocId    String
+  bloc      Bloc        @relation(fields: [blocId], references: [id])
+  exercices Exercice[]
+  logs      LogSeance[]
+}
+
+model Exercice {
+  id           String     @id @default(cuid())
+  nom          String
+  series       Int
+  reps         String
+  chargeTarget String
+  unite        String?
+  isGenou      Boolean    @default(false)
+  typeExercice String     @default("force")
+  ordre        Int        @default(0)
+  seanceId     String
+  seance       Seance     @relation(fields: [seanceId], references: [id])
+  logs         LogSerie[]
+}
+
+model LogSeance {
+  id           String     @id @default(cuid())
+  date         DateTime   @default(now())
+  seanceId     String
+  seance       Seance     @relation(fields: [seanceId], references: [id])
+  statut       String     @default("completee")
+  genouDouleur Int        @default(0)
+  fatigue      Int        @default(0)
+  noteLibre    String?
+  series       LogSerie[]
+  analyse      String?
+}
+
+model LogSerie {
+  id           String    @id @default(cuid())
+  logSeanceId  String
+  logSeance    LogSeance @relation(fields: [logSeanceId], references: [id])
+  exerciceId   String
+  exercice     Exercice  @relation(fields: [exerciceId], references: [id])
+  numeroSerie  Int
+  chargeReelle String
+  repsReelles  String
+  ressenti     String
+}
+
+model AjustementClaude {
+  id      String   @id @default(cuid())
+  date    DateTime @default(now())
+  prompt  String
+  reponse String
+  actions Json
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  date      DateTime @default(now())
+  role      String
+  content   String
+  sessionId String
+}
