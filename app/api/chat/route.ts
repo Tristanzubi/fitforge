@@ -50,22 +50,22 @@ PROFIL :
 - Reprise de saison en septembre
 
 PROGRAMME EN COURS :
-${JSON.stringify(blocs.map(b => ({
+${JSON.stringify(blocs.map((b: { numero: number; nom: string; semaines: string; seances: { nom: string; jour: string; exercices: { nom: string; series: number; reps: string; chargeTarget: string; unite: string | null }[] }[] }) => ({
   bloc: `Bloc ${b.numero} — ${b.nom} (semaines ${b.semaines})`,
-  seances: b.seances.map(s => ({
+  seances: b.seances.map((s) => ({
     nom: s.nom,
     jour: s.jour,
-    exercices: s.exercices.map(e => `${e.nom} ${e.series}x${e.reps} @ ${e.chargeTarget}${e.unite || ""}`),
+    exercices: s.exercices.map((e) => `${e.nom} ${e.series}x${e.reps} @ ${e.chargeTarget}${e.unite || ""}`),
   })),
 })), null, 2)}
 
 DERNIERS LOGS :
-${JSON.stringify(recentLogs.map(l => ({
+${JSON.stringify(recentLogs.map((l: { date: Date; fatigue: number; genouDouleur: number; analyse: string | null; seance: { nom: string }; series: { exercice: { nom: string }; chargeReelle: string; repsReelles: string; ressenti: string }[] }) => ({
   date: l.date,
   seance: l.seance.nom,
   fatigue: l.fatigue,
   genou: l.genouDouleur,
-  series: l.series.map(s => `${s.exercice.nom}: ${s.chargeReelle}×${s.repsReelles} (${s.ressenti})`),
+  series: l.series.map((s) => `${s.exercice.nom}: ${s.chargeReelle}×${s.repsReelles} (${s.ressenti})`),
   analyse: l.analyse ? l.analyse.slice(0, 200) : null,
 })), null, 2)}`;
 
