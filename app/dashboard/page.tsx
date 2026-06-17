@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Calendar, Dumbbell, Heart, Zap, TrendingUp, MessageCircle } from "lucide-react";
+import { Calendar, Dumbbell, Heart, Zap, TrendingUp, MessageCircle, BookOpen } from "lucide-react";
 import { BlocCard } from "@/components/BlocModal";
 
 const BLOC_COLORS: Record<string, string> = {
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
   ]);
 
   return (
-    <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
+    <div className="min-h-screen px-4 pt-6 pb-24 max-w-lg mx-auto">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-1">
@@ -128,11 +128,11 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {/* Accès rapide coach */}
-      <div className="mb-6">
+      {/* Accès rapide coach + infos */}
+      <div className="mb-6 space-y-2">
         <Link href="/chat">
           <div className="rounded-xl border border-orange-500/30 bg-orange-500/10 p-4 flex items-center gap-3 hover:bg-orange-500/15 transition-colors">
-            <div className="h-9 w-9 rounded-xl bg-orange-500 flex items-center justify-center flex-shrink-0">
+            <div className="h-9 w-9 rounded-xl bg-orange-500 flex items-center justify-center shrink-0">
               <MessageCircle className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">
@@ -145,7 +145,19 @@ export default async function DashboardPage() {
                 <p className="text-xs text-zinc-500 mt-0.5">Pose-moi une question sur ton entraînement</p>
               )}
             </div>
-            <span className="text-xs text-orange-400 font-medium flex-shrink-0">Ouvrir →</span>
+            <span className="text-xs text-orange-400 font-medium shrink-0">Ouvrir →</span>
+          </div>
+        </Link>
+        <Link href="/infos">
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 flex items-center gap-3 hover:border-zinc-600 transition-colors">
+            <div className="h-9 w-9 rounded-xl bg-zinc-800 flex items-center justify-center shrink-0">
+              <BookOpen className="h-5 w-5 text-zinc-400" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-zinc-200">Infos & Conseils</p>
+              <p className="text-xs text-zinc-500 mt-0.5">Nutrition · Gestion des charges · Variantes</p>
+            </div>
+            <span className="text-xs text-zinc-500 shrink-0">Voir →</span>
           </div>
         </Link>
       </div>
@@ -198,7 +210,7 @@ export default async function DashboardPage() {
             {recentLogs.map((log) => (
               <Link key={log.id} href={`/historique/${log.id}`}>
                 <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3 flex items-center gap-3 hover:border-zinc-600 transition-colors">
-                  <div className={`h-2 w-2 rounded-full flex-shrink-0 ${getBlocDot(log.seance.bloc.couleur)}`} />
+                  <div className={`h-2 w-2 rounded-full shrink-0 ${getBlocDot(log.seance.bloc.couleur)}`} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-zinc-200 truncate">{log.seance.nom}</p>
                     <p className="text-xs text-zinc-500">{new Date(log.date).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })}</p>

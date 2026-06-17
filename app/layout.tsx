@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { ClientLayout } from "@/components/ClientLayout";
@@ -10,10 +10,14 @@ export const metadata: Metadata = {
   description: "Préparation physique intelligente 10 semaines",
 };
 
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${geist.variable} h-full antialiased dark`}>
-      <body className="min-h-full bg-zinc-950 text-zinc-100 pb-16">
+      <body className="min-h-full bg-zinc-950 text-zinc-100">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

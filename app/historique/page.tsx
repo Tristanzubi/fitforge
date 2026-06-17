@@ -22,7 +22,7 @@ export default async function HistoriquePage() {
   });
 
   return (
-    <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
+    <div className="min-h-screen px-4 pt-6 pb-24 max-w-lg mx-auto">
       <div className="mb-6">
         <h1 className="text-xl font-bold text-zinc-100">Historique</h1>
         <p className="text-xs text-zinc-500 mt-0.5">{logs.length} séance{logs.length !== 1 ? "s" : ""} enregistrée{logs.length !== 1 ? "s" : ""}</p>

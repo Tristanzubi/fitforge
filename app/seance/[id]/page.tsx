@@ -16,6 +16,13 @@ type Exercice = {
   ordre: number;
 };
 
+type PreviousSerie = {
+  exerciceId: string;
+  chargeReelle: string;
+  repsReelles: string;
+  ressenti: string;
+};
+
 type Seance = {
   id: string;
   nom: string;
@@ -24,6 +31,7 @@ type Seance = {
   note: string | null;
   bloc: { nom: string; couleur: string; numero: number };
   exercices: Exercice[];
+  logs: { series: PreviousSerie[] }[];
 };
 
 type SerieLog = {
@@ -326,6 +334,7 @@ export default function SeancePage() {
         <ExerciceLogger
           exo={currentExo}
           existingSeries={getSeriesForExo(currentExo.id)}
+          previousSeries={seance.logs[0]?.series.filter((s) => s.exerciceId === currentExo.id) ?? []}
           onAddSerie={(data) => addSerie(currentExo.id, data)}
           onNext={() => {
             if (currentExoIdx < exos.length - 1) setCurrentExoIdx(currentExoIdx + 1);
@@ -341,17 +350,23 @@ export default function SeancePage() {
 function ExerciceLogger({
   exo,
   existingSeries,
+  previousSeries,
   onAddSerie,
   onNext,
   isLast,
 }: {
   exo: Exercice;
   existingSeries: SerieLog[];
+  previousSeries: PreviousSerie[];
   onAddSerie: (data: Omit<SerieLog, "exerciceId" | "numeroSerie">) => void;
   onNext: () => void;
   isLast: boolean;
 }) {
-  const [charge, setCharge] = useState(exo.chargeTarget.replace(/[^0-9.]/g, "") || "");
+  const lastSerie = previousSeries[0];
+  const [charge, setCharge] = useState(
+    lastSerie?.chargeReelle.replace(/[^0-9.]/g, "") ||
+    exo.chargeTarget.replace(/[^0-9.]/g, "") || ""
+  );
   const [reps, setReps] = useState(exo.reps.split("-")[0] || "");
   const [ressenti, setRessenti] = useState<"facile" | "bon" | "dur" | "trop">("bon");
 
@@ -396,7 +411,14 @@ function ExerciceLogger({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-zinc-500 mb-1 block">Charge {exo.unite && `(${exo.unite})`}</label>
+              <label className="text-xs text-zinc-500 mb-1 block">
+                Charge {exo.unite && `(${exo.unite})`}
+                {lastSerie && (
+                  <span className="ml-2 text-zinc-600">
+                    · Dernière fois: {lastSerie.chargeReelle}{exo.unite ? ` ${exo.unite}` : ""} × {lastSerie.repsReelles}
+                  </span>
+                )}
+              </label>
               <input
                 type="text"
                 inputMode="decimal"

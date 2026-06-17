@@ -38,7 +38,7 @@ export default function ProgressionPage() {
   const selectedData = stats.exercices.find((e) => e.nom === selected);
 
   return (
-    <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
+    <div className="min-h-screen px-4 pt-6 pb-24 max-w-lg mx-auto">
       <div className="mb-6 flex items-center gap-2">
         <TrendingUp className="h-5 w-5 text-orange-400" />
         <h1 className="text-xl font-bold text-zinc-100">Progression</h1>
