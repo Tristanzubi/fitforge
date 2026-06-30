@@ -332,6 +332,7 @@ export default function SeancePage() {
       {/* Current exercise */}
       {currentExo && (
         <ExerciceLogger
+          key={currentExo.id}
           exo={currentExo}
           existingSeries={getSeriesForExo(currentExo.id)}
           previousSeries={seance.logs[0]?.series.filter((s) => s.exerciceId === currentExo.id) ?? []}
