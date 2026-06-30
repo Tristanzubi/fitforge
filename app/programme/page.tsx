@@ -27,8 +27,8 @@ export default async function ProgrammePage() {
   return (
     <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-zinc-100">Programme</h1>
-        <p className="text-xs text-zinc-500 mt-0.5">10 semaines — Mi-juin → fin août 2025</p>
+        <h1 className="text-xl font-bold text-app-fg1">Programme</h1>
+        <p className="text-xs text-app-fg3 mt-0.5">10 semaines — Mi-juin → fin août 2025</p>
       </div>
 
       <div className="space-y-6">
@@ -40,7 +40,7 @@ export default async function ProgrammePage() {
                 <div className={`h-2.5 w-2.5 rounded-full ${style.dot}`} />
                 <div>
                   <p className={`font-bold text-sm ${style.text}`}>Bloc {bloc.numero} — {bloc.nom}</p>
-                  <p className="text-xs text-zinc-500">Semaines {bloc.semaines}</p>
+                  <p className="text-xs text-app-fg3">Semaines {bloc.semaines}</p>
                 </div>
               </div>
 
@@ -54,31 +54,31 @@ export default async function ProgrammePage() {
                   const hasOlympique = seance.exercices.some((e) => e.typeExercice === "olympique");
                   return (
                     <Link key={seance.id} href={`/seance/${seance.id}`}>
-                      <div className={`rounded-xl bg-zinc-900 border p-3 hover:border-zinc-600 transition-colors ${
-                        isDone ? "border-green-500/20" : isSkipped ? "border-zinc-700 opacity-60" : "border-zinc-800"
+                      <div className={`rounded-xl bg-app-card border p-3 hover:border-app-fg3 transition-colors ${
+                        isDone ? "border-green-500/20" : isSkipped ? "border-app-edge opacity-60" : "border-app-edge"
                       }`}>
                         <div className="flex items-center gap-3">
                           <div className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${
-                            isDone ? "bg-green-500/10" : isSkipped ? "bg-zinc-800" : "bg-zinc-800"
+                            isDone ? "bg-green-500/10" : isSkipped ? "bg-app-deep" : "bg-app-deep"
                           }`}>
-                            <Dumbbell className={`h-4 w-4 ${isDone ? "text-green-400" : isSkipped ? "text-zinc-600" : "text-zinc-500"}`} />
+                            <Dumbbell className={`h-4 w-4 ${isDone ? "text-green-400" : isSkipped ? "text-app-fg3" : "text-app-fg3"}`} />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5">
-                              <p className="text-sm font-medium text-zinc-200 truncate">{seance.nom}</p>
+                              <p className="text-sm font-medium text-app-fg1 truncate">{seance.nom}</p>
                               {hasGenou && <Heart className="h-3 w-3 text-red-400 shrink-0" />}
                               {hasOlympique && <span className="text-[9px] text-yellow-400 shrink-0">⚡</span>}
                             </div>
                             <div className="flex items-center gap-2 mt-0.5">
-                              <p className="text-xs text-zinc-500">{seance.jour} · {seance.freq}</p>
+                              <p className="text-xs text-app-fg3">{seance.jour} · {seance.freq}</p>
                               {seance.lieu === "dehors" && <span className="text-[9px] text-blue-400">🌤 dehors</span>}
                             </div>
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
                             {isDone && <span className="text-[9px] text-green-400 font-medium">✓</span>}
-                            {isSkipped && <span className="text-[9px] text-zinc-500">passée</span>}
-                            <span className="text-xs text-zinc-600">{seance.exercices.length} exos</span>
-                            <ChevronRight className="h-4 w-4 text-zinc-600" />
+                            {isSkipped && <span className="text-[9px] text-app-fg3">passée</span>}
+                            <span className="text-xs text-app-fg3">{seance.exercices.length} exos</span>
+                            <ChevronRight className="h-4 w-4 text-app-fg3" />
                           </div>
                         </div>
 
@@ -88,13 +88,13 @@ export default async function ProgrammePage() {
                               <span key={e.id} className={`text-[9px] px-1.5 py-0.5 rounded border ${
                                 e.typeExercice === "olympique" ? "border-yellow-500/30 text-yellow-400 bg-yellow-500/5" :
                                 e.isGenou ? "border-red-500/30 text-red-400 bg-red-500/5" :
-                                "border-zinc-800 text-zinc-600"
+                                "border-app-edge text-app-fg3"
                               }`}>
                                 {e.nom}
                               </span>
                             ))}
                             {seance.exercices.length > 4 && (
-                              <span className="text-[9px] text-zinc-600">+{seance.exercices.length - 4}</span>
+                              <span className="text-[9px] text-app-fg3">+{seance.exercices.length - 4}</span>
                             )}
                           </div>
                         )}

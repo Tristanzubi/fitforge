@@ -24,7 +24,7 @@ export function UndoSeanceButton({ seanceId }: { seanceId: string }) {
     <button
       onClick={handleUndo}
       disabled={loading}
-      className="flex items-center gap-1 text-[10px] text-zinc-600 hover:text-zinc-400 transition-colors disabled:opacity-40 px-2 py-1 rounded-lg hover:bg-zinc-800"
+      className="flex items-center gap-1 text-[10px] text-app-fg3 hover:text-app-fg2 transition-colors disabled:opacity-40 px-2 py-1 rounded-lg hover:bg-app-deep"
     >
       {loading ? (
         <Loader2 className="h-3 w-3 animate-spin" />

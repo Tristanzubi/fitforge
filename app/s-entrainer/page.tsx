@@ -17,7 +17,7 @@ const DEFAULT_CFG = BLOC_CFG["#f97316"];
 
 const TYPE_COLOR: Record<string, string> = {
   force: "text-blue-400", cardio: "text-green-400",
-  circuit: "text-purple-400", test: "text-yellow-400", mobilite: "text-zinc-400",
+  circuit: "text-purple-400", test: "text-yellow-400", mobilite: "text-app-fg2",
 };
 
 function parseDuree(semaines: string): number {
@@ -58,7 +58,7 @@ export default async function SEntrainerPage({
   if (!blocs.length) {
     return (
       <div className="flex min-h-screen items-center justify-center px-6 text-center">
-        <p className="text-zinc-500 text-sm">Aucun programme trouvé.<br />Lance le seed pour démarrer.</p>
+        <p className="text-app-fg3 text-sm">Aucun programme trouvé.<br />Lance le seed pour démarrer.</p>
       </div>
     );
   }
@@ -133,25 +133,25 @@ export default async function SEntrainerPage({
       {/* Navigation header */}
       <div className="flex items-center justify-between px-4 py-4">
         {prevHref ? (
-          <Link href={prevHref} className="h-9 w-9 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-zinc-700 transition-colors">
-            <ChevronLeft className="h-4 w-4 text-zinc-300" />
+          <Link href={prevHref} className="h-9 w-9 rounded-full bg-app-deep flex items-center justify-center hover:bg-app-deep transition-colors">
+            <ChevronLeft className="h-4 w-4 text-app-fg2" />
           </Link>
         ) : (
           <div className="h-9 w-9" />
         )}
 
         <div className="text-center">
-          <p className="text-sm font-semibold text-zinc-100">
+          <p className="text-sm font-semibold text-app-fg1">
             Semaine {semaineAbsolue}
           </p>
-          <p className="text-[11px] text-zinc-500">
+          <p className="text-[11px] text-app-fg3">
             Bloc {bloc.numero} · sem. {sem}/{dureeBloc}
             {dureeBloc > 1 && (
               <span className="ml-1">
                 {Array.from({ length: dureeBloc }, (_, i) => (
                   <span
                     key={i}
-                    className={`inline-block h-1.5 w-1.5 rounded-full mx-0.5 ${i + 1 === sem ? cfg.dot : "bg-zinc-700"}`}
+                    className={`inline-block h-1.5 w-1.5 rounded-full mx-0.5 ${i + 1 === sem ? cfg.dot : "bg-app-deep"}`}
                   />
                 ))}
               </span>
@@ -160,8 +160,8 @@ export default async function SEntrainerPage({
         </div>
 
         {nextHref ? (
-          <Link href={nextHref} className="h-9 w-9 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-zinc-700 transition-colors">
-            <ChevronRight className="h-4 w-4 text-zinc-300" />
+          <Link href={nextHref} className="h-9 w-9 rounded-full bg-app-deep flex items-center justify-center hover:bg-app-deep transition-colors">
+            <ChevronRight className="h-4 w-4 text-app-fg2" />
           </Link>
         ) : (
           <div className="h-9 w-9" />
@@ -177,7 +177,7 @@ export default async function SEntrainerPage({
               <p className={`text-sm font-bold ${cfg.text}`}>{bloc.nom}</p>
             </div>
             {dureeBloc > 1 && (
-              <span className="text-[10px] text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] text-app-fg3 bg-app-deep px-2 py-0.5 rounded-full">
                 {dureeBloc} semaines
               </span>
             )}
@@ -185,25 +185,25 @@ export default async function SEntrainerPage({
 
           <div className="grid grid-cols-3 gap-2 mb-3">
             <div>
-              <p className="text-[10px] text-zinc-500 mb-0.5">Séances</p>
-              <p className="text-xl font-bold text-zinc-100">{done}</p>
-              <p className="text-[10px] text-zinc-600">sur {total}</p>
+              <p className="text-[10px] text-app-fg3 mb-0.5">Séances</p>
+              <p className="text-xl font-bold text-app-fg1">{done}</p>
+              <p className="text-[10px] text-app-fg3">sur {total}</p>
             </div>
             <div>
-              <p className="text-[10px] text-zinc-500 mb-0.5">Durée/sem.</p>
-              <p className="text-xl font-bold text-zinc-100">
+              <p className="text-[10px] text-app-fg3 mb-0.5">Durée/sem.</p>
+              <p className="text-xl font-bold text-app-fg1">
                 {Math.floor(dureeTotal / 60) > 0 ? `${Math.floor(dureeTotal / 60)}h` : `${dureeTotal}m`}
               </p>
-              <p className="text-[10px] text-zinc-600">{dureeTotal % 60 > 0 ? `${dureeTotal % 60} min` : "estimé"}</p>
+              <p className="text-[10px] text-app-fg3">{dureeTotal % 60 > 0 ? `${dureeTotal % 60} min` : "estimé"}</p>
             </div>
             <div>
-              <p className="text-[10px] text-zinc-500 mb-0.5">Progression</p>
-              <p className="text-xl font-bold text-zinc-100">{pct}%</p>
-              <p className="text-[10px] text-zinc-600">{skipped > 0 ? `${skipped} passée${skipped > 1 ? "s" : ""}` : "cette sem."}</p>
+              <p className="text-[10px] text-app-fg3 mb-0.5">Progression</p>
+              <p className="text-xl font-bold text-app-fg1">{pct}%</p>
+              <p className="text-[10px] text-app-fg3">{skipped > 0 ? `${skipped} passée${skipped > 1 ? "s" : ""}` : "cette sem."}</p>
             </div>
           </div>
 
-          <div className="h-1.5 rounded-full bg-zinc-800/50">
+          <div className="h-1.5 rounded-full bg-app-deep/50">
             <div
               className={`h-1.5 rounded-full ${cfg.bar} transition-all duration-500`}
               style={{ width: `${pct}%` }}
@@ -212,8 +212,8 @@ export default async function SEntrainerPage({
 
           {/* Week dots for quick navigation */}
           {dureeBloc > 1 && (
-            <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-zinc-800/50">
-              <span className="text-[9px] text-zinc-600 mr-1">Semaines :</span>
+            <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-app-edge/50">
+              <span className="text-[9px] text-app-fg3 mr-1">Semaines :</span>
               {Array.from({ length: dureeBloc }, (_, i) => {
                 const w = i + 1;
                 const wDone = seancesWithWeekLog.every((s) => {
@@ -229,8 +229,8 @@ export default async function SEntrainerPage({
                       isCurrent
                         ? `${cfg.dot.replace("bg-", "bg-")} text-zinc-900`
                         : wDone
-                        ? "bg-zinc-700 text-zinc-400"
-                        : "bg-zinc-800 text-zinc-600 hover:bg-zinc-700"
+                        ? "bg-app-deep text-app-fg2"
+                        : "bg-app-deep text-app-fg3 hover:bg-app-deep"
                     }`}
                     style={isCurrent ? { backgroundColor: bloc.couleur } : {}}
                   >
@@ -256,24 +256,24 @@ export default async function SEntrainerPage({
 
             return (
               <Link key={seance.id} href={`/seance/${seance.id}`} className="block group">
-                <div className={`rounded-2xl bg-zinc-900 border transition-all duration-150 ${
-                  isDone ? "border-zinc-800 opacity-60"
-                  : isSkipped ? "border-zinc-800/50 opacity-40"
-                  : "border-zinc-800 hover:border-zinc-600 group-active:scale-[0.99]"
+                <div className={`rounded-2xl bg-app-card border transition-all duration-150 ${
+                  isDone ? "border-app-edge opacity-60"
+                  : isSkipped ? "border-app-edge/50 opacity-40"
+                  : "border-app-edge hover:border-app-fg3 group-active:scale-[0.99]"
                 }`}>
                   <div className="flex items-center p-3.5 gap-3">
                     {/* Left: day + index */}
                     <div className={`h-11 w-11 rounded-xl flex flex-col items-center justify-center shrink-0 ${
-                      isDone ? "bg-green-500/10" : isSkipped ? "bg-zinc-800" : "bg-zinc-800"
+                      isDone ? "bg-green-500/10" : isSkipped ? "bg-app-deep" : "bg-app-deep"
                     }`}>
                       {isDone ? (
                         <CheckCircle2 className="h-5 w-5 text-green-400" />
                       ) : isSkipped ? (
-                        <SkipForward className="h-4 w-4 text-zinc-600" />
+                        <SkipForward className="h-4 w-4 text-app-fg3" />
                       ) : (
                         <>
-                          <span className="text-[9px] text-zinc-500 font-bold">{seance.jour.slice(0, 3).toUpperCase()}</span>
-                          <span className="text-xs font-bold text-zinc-200">{i + 1}</span>
+                          <span className="text-[9px] text-app-fg3 font-bold">{seance.jour.slice(0, 3).toUpperCase()}</span>
+                          <span className="text-xs font-bold text-app-fg1">{i + 1}</span>
                         </>
                       )}
                     </div>
@@ -281,18 +281,18 @@ export default async function SEntrainerPage({
                     {/* Center */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5 mb-0.5">
-                        <p className={`text-sm font-semibold truncate ${isDone || isSkipped ? "text-zinc-500" : "text-zinc-100"}`}>
+                        <p className={`text-sm font-semibold truncate ${isDone || isSkipped ? "text-app-fg3" : "text-app-fg1"}`}>
                           {seance.nom}
                         </p>
                         {olympiques.length > 0 && <Zap className="h-3 w-3 text-yellow-400 shrink-0" />}
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className={`text-[10px] font-medium ${typeColor}`}>{seance.type}</span>
-                        <span className="flex items-center gap-0.5 text-[10px] text-zinc-600">
+                        <span className="flex items-center gap-0.5 text-[10px] text-app-fg3">
                           <Clock className="h-2.5 w-2.5" />{duree} min
                         </span>
                         {seance.lieu === "dehors" && (
-                          <span className="flex items-center gap-0.5 text-[10px] text-zinc-600">
+                          <span className="flex items-center gap-0.5 text-[10px] text-app-fg3">
                             <MapPin className="h-2.5 w-2.5" />dehors
                           </span>
                         )}
@@ -301,13 +301,13 @@ export default async function SEntrainerPage({
                         <div className="mt-1.5 flex flex-wrap gap-1">
                           {firstExos.map((e) => (
                             <span key={e.id} className={`text-[9px] px-1.5 py-0.5 rounded-md ${
-                              e.typeExercice === "olympique" ? "bg-yellow-500/10 text-yellow-400" : "bg-zinc-800 text-zinc-500"
+                              e.typeExercice === "olympique" ? "bg-yellow-500/10 text-yellow-400" : "bg-app-deep text-app-fg3"
                             }`}>
                               {e.typeExercice === "olympique" ? "⚡ " : ""}{e.nom}
                             </span>
                           ))}
                           {seance.exercices.length > 3 && (
-                            <span className="text-[9px] text-zinc-600 px-1">+{seance.exercices.length - 3}</span>
+                            <span className="text-[9px] text-app-fg3 px-1">+{seance.exercices.length - 3}</span>
                           )}
                         </div>
                       )}
@@ -322,11 +322,11 @@ export default async function SEntrainerPage({
                         </>
                       ) : isSkipped ? (
                         <>
-                          <span className="text-[10px] text-zinc-600">Passée</span>
+                          <span className="text-[10px] text-app-fg3">Passée</span>
                           <UndoSeanceButton seanceId={seance.id} />
                         </>
                       ) : (
-                        <ChevronRight className="h-4 w-4 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
+                        <ChevronRight className="h-4 w-4 text-app-fg3 group-hover:text-app-fg2 transition-colors" />
                       )}
                     </div>
                   </div>
@@ -339,19 +339,19 @@ export default async function SEntrainerPage({
         {/* Next bloc preview */}
         {sem === dureeBloc && nextBloc && (
           <div className="mt-2">
-            <p className="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider mb-2 px-1">Prochaine phase</p>
+            <p className="text-[11px] font-semibold text-app-fg3 uppercase tracking-wider mb-2 px-1">Prochaine phase</p>
             <Link href={`/s-entrainer?bloc=${nextBloc.numero}&sem=1`} className="block">
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 flex items-center gap-3 hover:border-zinc-700 transition-colors">
+              <div className="rounded-2xl border border-app-edge bg-app-card/50 p-4 flex items-center gap-3 hover:border-app-edge transition-colors">
                 <div className={`h-9 w-9 rounded-xl flex items-center justify-center shrink-0 ${(BLOC_CFG[nextBloc.couleur] ?? DEFAULT_CFG).bg}`}>
                   <Dumbbell className={`h-4 w-4 ${(BLOC_CFG[nextBloc.couleur] ?? DEFAULT_CFG).text}`} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-zinc-200">{nextBloc.nom}</p>
-                  <p className="text-[11px] text-zinc-500">
+                  <p className="text-sm font-semibold text-app-fg1">{nextBloc.nom}</p>
+                  <p className="text-[11px] text-app-fg3">
                     Bloc {nextBloc.numero} · {parseDuree(nextBloc.semaines)} sem. · S{nextBloc.semaines}
                   </p>
                 </div>
-                <ChevronRight className="h-4 w-4 text-zinc-600" />
+                <ChevronRight className="h-4 w-4 text-app-fg3" />
               </div>
             </Link>
           </div>

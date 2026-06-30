@@ -15,6 +15,12 @@ function exo(o: ExoInput) {
 }
 
 async function main() {
+  const logCount = await prisma.logSeance.count();
+  if (logCount > 0) {
+    console.error(`❌ SEED BLOQUÉ — ${logCount} séances loggées en base. Supprimer manuellement si intentionnel.`);
+    process.exit(1);
+  }
+
   await prisma.chatMessage.deleteMany();
   await prisma.ajustementClaude.deleteMany();
   await prisma.logSerie.deleteMany();
@@ -23,8 +29,8 @@ async function main() {
   await prisma.seance.deleteMany();
   await prisma.bloc.deleteMany();
 
-  // ─── BLOC 1 — Fondations (S1-3) ───────────────────────────────────────────
-  // Matériel : KB 24kg, KB 20kg, hal. 2×max 20kg, barre de traction
+  // ─── BLOC 1 — Fondations (S1-3) · 65% 1RM ────────────────────────────────
+  // ⚠️ S3 = Vacances → variantes KB maison (voir note de chaque séance)
   await prisma.bloc.create({
     data: {
       numero: 1, nom: "Fondations", semaines: "1-3", couleur: "#4ade80",
@@ -34,76 +40,68 @@ async function main() {
           // ── LUNDI — Force Haut A ──────────────────────────────────────────
           {
             nom: "Force Haut A", type: "force", freq: "1x/semaine", jour: "Lundi", lieu: "salle",
-            note: "S1: Dév 2×12 · S2: 2×14 · S3: 2×16 — Récup 90sec entre séries",
+            note: "Superset: 1A+1B sans récup → 90sec → répéter. 3A+3B idem. S1:DC45×8 · S2:47×8 · S3:2×14kg KB (vacances) — Récup 2-3min",
             exercices: { create: [
-              exo({ nom: "Tractions prise large",             series: 5, reps: "5",         chargeTarget: "PDC",    unite: "reps",      ordre: 1 }),
-              exo({ nom: "Développé haltères sol",            series: 4, reps: "10",         chargeTarget: "12",     unite: "kg/hal.",   ordre: 2 }),
-              exo({ nom: "Rowing haltère unilatéral",         series: 4, reps: "10/côté",    chargeTarget: "16",                         ordre: 3 }),
-              exo({ nom: "Push press KB",                     series: 3, reps: "8/côté",     chargeTarget: "20",     unite: "kg (KB)",   ordre: 4 }),
-              exo({ nom: "Face pulls élastique",              series: 3, reps: "15",          chargeTarget: "léger",  unite: "",          ordre: 5 }),
-              exo({ nom: "Planche",                           series: 3, reps: "45sec",       chargeTarget: "PDC",    unite: "sec",  typeExercice: "gainage", ordre: 6 }),
-              exo({ nom: "Gainage cervical",                  series: 2, reps: "30sec",       chargeTarget: "PDC",    unite: "sec",  typeExercice: "gainage", ordre: 7 }),
+              exo({ nom: "1A. Développé couché",    series: 4, reps: "8",     chargeTarget: "45",    ordre: 1 }),
+              exo({ nom: "1B. Rowing barre",         series: 4, reps: "10",    chargeTarget: "40",    ordre: 2 }),
+              exo({ nom: "Tractions prise large",    series: 5, reps: "5",     chargeTarget: "PDC",   unite: "reps",    ordre: 3 }),
+              exo({ nom: "3A. Développé militaire",  series: 3, reps: "10",    chargeTarget: "35",    ordre: 4 }),
+              exo({ nom: "3B. Face pulls poulie",    series: 3, reps: "15",    chargeTarget: "léger", unite: "",        ordre: 5 }),
+              exo({ nom: "Dips",                     series: 3, reps: "8-10",  chargeTarget: "PDC",   unite: "reps",    ordre: 6 }),
             ]},
           },
 
-          // ── MARDI — Force Bas A + KB clean ───────────────────────────────
+          // ── MARDI — Force Bas A ───────────────────────────────────────────
           {
-            nom: "Force Bas A + KB clean", type: "force", freq: "1x/semaine", jour: "Mardi", lieu: "salle",
-            note: "S1: Bulg 2×10 · S2: 2×12 · S3: 2×14 — KB clean en tête, système nerveux frais. Récup 2min",
+            nom: "Force Bas A", type: "force", freq: "1x/semaine", jour: "Mardi", lieu: "salle",
+            note: "Squat clean en premier — SNC frais. Superset 4A+4B. S1:SC40kg · S2:45kg · S3:KB24 (vacances). Récup 2-3min",
             exercices: { create: [
-              exo({ nom: "KB clean ⚡",                       series: 4, reps: "5/côté",     chargeTarget: "20",  unite: "kg (KB)", typeExercice: "olympique", ordre: 1 }),
-              exo({ nom: "Bulgarian split squat",             series: 4, reps: "8/jambe",    chargeTarget: "10",  unite: "kg/hal.", isGenou: true,             ordre: 2 }),
-              exo({ nom: "KB swing ⚡",                       series: 4, reps: "12",          chargeTarget: "24",  unite: "kg (KB)", typeExercice: "olympique", ordre: 3 }),
-              exo({ nom: "Single leg deadlift",               series: 3, reps: "8/jambe",    chargeTarget: "20",  unite: "kg (KB)", isGenou: true,             ordre: 4 }),
-              exo({ nom: "Fentes marchées haltères",          series: 3, reps: "10/jambe",   chargeTarget: "10",  unite: "kg/hal.",                            ordre: 5 }),
-              exo({ nom: "Mollets unipodaux",                 series: 3, reps: "15/jambe",   chargeTarget: "PDC", unite: "reps",                               ordre: 6 }),
-              exo({ nom: "Farmer's carry",                    series: 3, reps: "20m",         chargeTarget: "44",  unite: "kg total",                          ordre: 7 }),
+              exo({ nom: "Squat clean ⚡",           series: 4, reps: "4",     chargeTarget: "40",  typeExercice: "olympique",             ordre: 1 }),
+              exo({ nom: "Squat barre",               series: 4, reps: "8",     chargeTarget: "60",                                         ordre: 2 }),
+              exo({ nom: "Soulevé de terre",          series: 3, reps: "6",     chargeTarget: "80",                                         ordre: 3 }),
+              exo({ nom: "4A. Bulgarian split squat", series: 4, reps: "8/j",   chargeTarget: "10",  unite: "kg/hal.", isGenou: true,        ordre: 4 }),
+              exo({ nom: "4B. Leg press",             series: 4, reps: "12",    chargeTarget: "80",                                         ordre: 5 }),
             ]},
           },
 
-          // ── MERCREDI — Intervalles VMA ────────────────────────────────────
+          // ── MERCREDI — Récup Active ───────────────────────────────────────
           {
-            nom: "Intervalles VMA", type: "cardio", freq: "1x/semaine", jour: "Mercredi", lieu: "dehors",
-            note: "S1: 6×30sec · S2: 7×30sec · S3: 8×30sec — 90sec marche récup entre chaque",
+            nom: "Récup Active", type: "cardio", freq: "1x/semaine", jour: "Mercredi", lieu: "dehors",
+            note: "S1-3: 35min footing zone 2. Récupération active après Force Bas A — arriver frais jeudi",
             exercices: { create: [
-              exo({ nom: "Échauffement",                      series: 1, reps: "10min",  chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
-              exo({ nom: "Intervalles 30sec sprint / 90sec marche", series: 6, reps: "30sec", chargeTarget: "Max", unite: "", typeExercice: "cardio", ordre: 2 }),
-              exo({ nom: "Retour calme",                      series: 1, reps: "10min",  chargeTarget: "Zone 1", unite: "min", typeExercice: "cardio", ordre: 3 }),
+              exo({ nom: "Footing zone 2", series: 1, reps: "35min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
             ]},
           },
 
           // ── JEUDI — Force Haut B ──────────────────────────────────────────
           {
             nom: "Force Haut B", type: "force", freq: "1x/semaine", jour: "Jeudi", lieu: "salle",
-            note: "S1: Dév incliné 2×12, TGU KB16 · S2: 2×14, KB16 · S3: 2×16, KB20 — Récup 90sec",
+            note: "Superset 1A+1B et 3A. S1:DCPS40×10 · S2:42×10 · S3:2×12kg KB (vacances). Phase concentrique explosive — Récup 2-3min",
             exercices: { create: [
-              exo({ nom: "Tractions prise serrée",            series: 5, reps: "5",         chargeTarget: "PDC",  unite: "reps",                               ordre: 1 }),
-              exo({ nom: "Développé haltères incliné*",       series: 4, reps: "10",         chargeTarget: "12",   unite: "kg/hal.",                            ordre: 2 }),
-              exo({ nom: "Rowing KB unilatéral",              series: 4, reps: "10/côté",   chargeTarget: "24",   unite: "kg (KB)",                            ordre: 3 }),
-              exo({ nom: "KB press",                          series: 3, reps: "8/côté",    chargeTarget: "20",   unite: "kg (KB)",                            ordre: 4 }),
-              exo({ nom: "Extensions nuque élastique",        series: 3, reps: "15",         chargeTarget: "léger",unite: "",                                   ordre: 5 }),
-              exo({ nom: "Gainage latéral",                   series: 3, reps: "30sec/côté",chargeTarget: "PDC",  unite: "sec",   typeExercice: "gainage",      ordre: 6 }),
-              exo({ nom: "Turkish get-up",                    series: 2, reps: "3/côté",    chargeTarget: "16",   unite: "kg (KB)",                            ordre: 7 }),
+              exo({ nom: "1A. Dév. couché prise serrée", series: 4, reps: "10",   chargeTarget: "40",  ordre: 1 }),
+              exo({ nom: "1B. Tractions prise serrée",   series: 4, reps: "6",    chargeTarget: "PDC", unite: "reps", ordre: 2 }),
+              exo({ nom: "Push press",                    series: 5, reps: "5",    chargeTarget: "45",  ordre: 3 }),
+              exo({ nom: "3A. Tirage vertical poulie",    series: 3, reps: "12",   chargeTarget: "40",  ordre: 4 }),
+              exo({ nom: "Curl haltères",                 series: 3, reps: "10",   chargeTarget: "10",  unite: "kg/hal.", ordre: 5 }),
             ]},
           },
 
           // ── VENDREDI — Force Bas B + Sprints ─────────────────────────────
           {
-            nom: "Force Bas B + Sprints", type: "force", freq: "1x/semaine", jour: "Vendredi", lieu: "dehors",
-            note: "S1: RDL 2×14, 6 sprints · S2: RDL 2×16, 7 sprints · S3: RDL 2×18, 8 sprints — 8sec max / 2min récup",
+            nom: "Force Bas B + Sprints", type: "force", freq: "1x/semaine", jour: "Vendredi", lieu: "salle",
+            note: "30min muscu max → sprints dehors. S1:6×8sec · S2:7×8sec · S3:8×8sec (2min récup). S3=KB24/SC si vacances",
             exercices: { create: [
-              exo({ nom: "KB swing ⚡",                       series: 5, reps: "12",         chargeTarget: "24", unite: "kg (KB)", typeExercice: "olympique",   ordre: 1 }),
-              exo({ nom: "Pistol squat",                      series: 3, reps: "5/jambe",   chargeTarget: "PDC",unite: "reps",    isGenou: true,               ordre: 2 }),
-              exo({ nom: "Romanian deadlift haltères",        series: 4, reps: "10",         chargeTarget: "14", unite: "kg/hal.", isGenou: true,               ordre: 3 }),
-              exo({ nom: "Step-up lesté",                     series: 3, reps: "10/jambe",  chargeTarget: "10", unite: "kg/hal.", isGenou: true,               ordre: 4 }),
-              exo({ nom: "Sprints 8sec max",                  series: 6, reps: "8sec",       chargeTarget: "Max",unite: "",        typeExercice: "cardio",      ordre: 5 }),
+              exo({ nom: "Squat clean ⚡",         series: 3, reps: "4",      chargeTarget: "40",  typeExercice: "olympique",         ordre: 1 }),
+              exo({ nom: "Romanian deadlift",       series: 3, reps: "8",      chargeTarget: "75",  isGenou: true,                     ordre: 2 }),
+              exo({ nom: "Leg press unilatéral",    series: 3, reps: "8/j",    chargeTarget: "70",                                     ordre: 3 }),
+              exo({ nom: "Sprints 8sec max",        series: 6, reps: "8sec",   chargeTarget: "Max", unite: "", typeExercice: "cardio", ordre: 4 }),
             ]},
           },
 
           // ── SAMEDI — Footing Zone 2 ───────────────────────────────────────
           {
             nom: "Footing Zone 2", type: "cardio", freq: "1x/semaine", jour: "Samedi", lieu: "dehors",
-            note: "S1: 40min · S2: 40min · S3: 45min — allure conversationnelle, terrain plat",
+            note: "S1-3: 40min allure conversationnelle — terrain plat",
             exercices: { create: [
               exo({ nom: "Footing zone 2", series: 1, reps: "40min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
             ]},
@@ -114,7 +112,7 @@ async function main() {
     },
   });
 
-  // ─── BLOC 2 — Hypertrophie (S4-6) ─────────────────────────────────────────
+  // ─── BLOC 2 — Hypertrophie (S4-6) · 75% 1RM ──────────────────────────────
   await prisma.bloc.create({
     data: {
       numero: 2, nom: "Hypertrophie", semaines: "4-6", couleur: "#facc15",
@@ -124,76 +122,69 @@ async function main() {
           // ── LUNDI — Force Haut A ──────────────────────────────────────────
           {
             nom: "Force Haut A", type: "force", freq: "1x/semaine", jour: "Lundi", lieu: "salle",
-            note: "S4: Dév 2×16 · S5: 2×18 · S6: 2×20 — Dips chaises ajoutés. Récup 90sec",
+            note: "Superset 1A+1B et 3A+3B. S4:DC52×6 · S5:55×6 · S6:57×6 — Récup 2-3min",
             exercices: { create: [
-              exo({ nom: "Tractions prise large",             series: 5, reps: "6",         chargeTarget: "PDC",  unite: "reps",                               ordre: 1 }),
-              exo({ nom: "Développé haltères sol",            series: 5, reps: "8",          chargeTarget: "16",   unite: "kg/hal.",                            ordre: 2 }),
-              exo({ nom: "Rowing haltère unilatéral",         series: 5, reps: "8/côté",    chargeTarget: "18",                                                ordre: 3 }),
-              exo({ nom: "Push press KB",                     series: 4, reps: "6/côté",    chargeTarget: "24",   unite: "kg (KB)",                            ordre: 4 }),
-              exo({ nom: "Face pulls élastique",              series: 3, reps: "15",         chargeTarget: "léger",unite: "",                                   ordre: 5 }),
-              exo({ nom: "Dips entre chaises",                series: 3, reps: "10",         chargeTarget: "PDC",  unite: "reps",                               ordre: 6 }),
-              exo({ nom: "Gainage cervical",                  series: 3, reps: "30sec",      chargeTarget: "PDC",  unite: "sec",   typeExercice: "gainage",      ordre: 7 }),
+              exo({ nom: "1A. Développé couché",    series: 4, reps: "6",    chargeTarget: "52",    ordre: 1 }),
+              exo({ nom: "1B. Rowing barre",         series: 4, reps: "8",    chargeTarget: "48",    ordre: 2 }),
+              exo({ nom: "Tractions prise large",    series: 5, reps: "6",    chargeTarget: "PDC",   unite: "reps",  ordre: 3 }),
+              exo({ nom: "3A. Développé militaire",  series: 3, reps: "8",    chargeTarget: "42",    ordre: 4 }),
+              exo({ nom: "3B. Face pulls poulie",    series: 3, reps: "15",   chargeTarget: "léger", unite: "",      ordre: 5 }),
+              exo({ nom: "Dips",                     series: 3, reps: "6-8",  chargeTarget: "PDC",   unite: "reps",  ordre: 6 }),
             ]},
           },
 
-          // ── MARDI — Force Bas A + KB clean ───────────────────────────────
+          // ── MARDI — Force Bas A ───────────────────────────────────────────
           {
-            nom: "Force Bas A + KB clean", type: "force", freq: "1x/semaine", jour: "Mardi", lieu: "salle",
-            note: "S4: Bulg 2×14 · S5: 2×16 · S6: 2×18 — KB clean KB24. Récup 2-3min",
+            nom: "Force Bas A", type: "force", freq: "1x/semaine", jour: "Mardi", lieu: "salle",
+            note: "Squat clean lourd en premier. Superset 4A+4B. S4:SC55kg · S5:60kg · S6:65kg — Récup 2-3min",
             exercices: { create: [
-              exo({ nom: "KB clean ⚡",                       series: 5, reps: "5/côté",    chargeTarget: "24", unite: "kg (KB)", typeExercice: "olympique",    ordre: 1 }),
-              exo({ nom: "Bulgarian split squat",             series: 5, reps: "8/jambe",   chargeTarget: "14", unite: "kg/hal.", isGenou: true,                ordre: 2 }),
-              exo({ nom: "KB swing ⚡",                       series: 4, reps: "12",         chargeTarget: "24", unite: "kg (KB)", typeExercice: "olympique",    ordre: 3 }),
-              exo({ nom: "Single leg deadlift",               series: 4, reps: "8/jambe",   chargeTarget: "24", unite: "kg (KB)", isGenou: true,                ordre: 4 }),
-              exo({ nom: "Fentes marchées haltères",          series: 3, reps: "10/jambe",  chargeTarget: "14", unite: "kg/hal.",                              ordre: 5 }),
-              exo({ nom: "Farmer's carry",                    series: 3, reps: "25m",        chargeTarget: "44", unite: "kg total",                            ordre: 6 }),
+              exo({ nom: "Squat clean ⚡",           series: 4, reps: "4",    chargeTarget: "55",  typeExercice: "olympique",         ordre: 1 }),
+              exo({ nom: "Squat barre",               series: 4, reps: "6",    chargeTarget: "70",                                     ordre: 2 }),
+              exo({ nom: "Soulevé de terre",          series: 3, reps: "5",    chargeTarget: "90",                                     ordre: 3 }),
+              exo({ nom: "4A. Bulgarian split squat", series: 4, reps: "8/j",  chargeTarget: "14",  unite: "kg/hal.", isGenou: true,   ordre: 4 }),
+              exo({ nom: "4B. Leg press",             series: 4, reps: "10",   chargeTarget: "110",                                    ordre: 5 }),
             ]},
           },
 
-          // ── MERCREDI — Intervalles VMA ────────────────────────────────────
+          // ── MERCREDI — Récup Active ───────────────────────────────────────
           {
-            nom: "Intervalles VMA", type: "cardio", freq: "1x/semaine", jour: "Mercredi", lieu: "dehors",
-            note: "S4: 8×30sec · S5: 9×30sec · S6: 10×30sec — 90sec marche récup entre chaque",
+            nom: "Récup Active", type: "cardio", freq: "1x/semaine", jour: "Mercredi", lieu: "dehors",
+            note: "S4-6: 40min footing zone 2. Récupération active.",
             exercices: { create: [
-              exo({ nom: "Échauffement",                      series: 1, reps: "10min",  chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
-              exo({ nom: "Intervalles 30sec sprint / 90sec marche", series: 8, reps: "30sec", chargeTarget: "Max", unite: "", typeExercice: "cardio", ordre: 2 }),
-              exo({ nom: "Retour calme",                      series: 1, reps: "10min",  chargeTarget: "Zone 1", unite: "min", typeExercice: "cardio", ordre: 3 }),
+              exo({ nom: "Footing zone 2", series: 1, reps: "40min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
             ]},
           },
 
           // ── JEUDI — Force Haut B ──────────────────────────────────────────
           {
             nom: "Force Haut B", type: "force", freq: "1x/semaine", jour: "Jeudi", lieu: "salle",
-            note: "S4: Dév incliné 2×16, TGU KB20 · S5: 2×18, KB20 · S6: 2×20, KB20 — Récup 90sec",
+            note: "Superset 1A+1B et 3A. S4:DCPS48×8 · S5:50×8 · S6:52×8 — Tractions lestées +5kg. Récup 2-3min",
             exercices: { create: [
-              exo({ nom: "Tractions prise serrée",            series: 5, reps: "6",         chargeTarget: "PDC",  unite: "reps",                               ordre: 1 }),
-              exo({ nom: "Développé haltères incliné*",       series: 4, reps: "8",          chargeTarget: "16",   unite: "kg/hal.",                            ordre: 2 }),
-              exo({ nom: "Rowing KB unilatéral",              series: 4, reps: "8/côté",    chargeTarget: "24",   unite: "kg (KB)",                            ordre: 3 }),
-              exo({ nom: "KB press",                          series: 4, reps: "6/côté",    chargeTarget: "24",   unite: "kg (KB)",                            ordre: 4 }),
-              exo({ nom: "Extensions nuque élastique",        series: 3, reps: "15",         chargeTarget: "léger",unite: "",                                   ordre: 5 }),
-              exo({ nom: "Gainage dynamique",                 series: 3, reps: "30sec",      chargeTarget: "PDC",  unite: "sec",   typeExercice: "gainage",      ordre: 6 }),
-              exo({ nom: "Turkish get-up",                    series: 3, reps: "3/côté",    chargeTarget: "20",   unite: "kg (KB)",                            ordre: 7 }),
+              exo({ nom: "1A. Dév. couché prise serrée", series: 4, reps: "8",   chargeTarget: "48",  ordre: 1 }),
+              exo({ nom: "1B. Tractions lestées serrées", series: 4, reps: "8",  chargeTarget: "5",   unite: "kg (lest)", ordre: 2 }),
+              exo({ nom: "Push press",                    series: 5, reps: "4",   chargeTarget: "50",  ordre: 3 }),
+              exo({ nom: "3A. Tirage vertical poulie",    series: 3, reps: "10",  chargeTarget: "48",  ordre: 4 }),
+              exo({ nom: "Curl haltères",                 series: 3, reps: "8",   chargeTarget: "14",  unite: "kg/hal.", ordre: 5 }),
             ]},
           },
 
           // ── VENDREDI — Force Bas B + Sprints ─────────────────────────────
           {
-            nom: "Force Bas B + Sprints", type: "force", freq: "1x/semaine", jour: "Vendredi", lieu: "dehors",
-            note: "S4: Pistol KB12, RDL 2×18, 8 sprints · S5: KB14, 2×20, 9 sprints · S6: KB16, 2×20, 10 sprints — + 2×20sec à 85%",
+            nom: "Force Bas B + Sprints", type: "force", freq: "1x/semaine", jour: "Vendredi", lieu: "salle",
+            note: "30min muscu → sprints dehors. S4:8×8sec+2×20sec · S5:9×8sec+3×20sec · S6:10×8sec+4×20sec à 85%",
             exercices: { create: [
-              exo({ nom: "KB swing ⚡",                       series: 5, reps: "12",         chargeTarget: "24", unite: "kg (KB)", typeExercice: "olympique",   ordre: 1 }),
-              exo({ nom: "Pistol squat lesté",                series: 4, reps: "5/jambe",   chargeTarget: "12", unite: "kg (KB)", isGenou: true,               ordre: 2 }),
-              exo({ nom: "Romanian deadlift haltères",        series: 4, reps: "8",          chargeTarget: "18", unite: "kg/hal.", isGenou: true,               ordre: 3 }),
-              exo({ nom: "Step-up lesté",                     series: 3, reps: "10/jambe",  chargeTarget: "14", unite: "kg/hal.", isGenou: true,               ordre: 4 }),
-              exo({ nom: "Sprints 8sec max",                  series: 8, reps: "8sec",       chargeTarget: "Max",unite: "",        typeExercice: "cardio",      ordre: 5 }),
-              exo({ nom: "Accélérations 20sec à 85%",        series: 2, reps: "20sec",       chargeTarget: "85%",unite: "",        typeExercice: "cardio",      ordre: 6 }),
+              exo({ nom: "Squat clean ⚡",          series: 3, reps: "4",     chargeTarget: "55",  typeExercice: "olympique",         ordre: 1 }),
+              exo({ nom: "Romanian deadlift",        series: 3, reps: "6",     chargeTarget: "85",  isGenou: true,                     ordre: 2 }),
+              exo({ nom: "Leg press unilatéral",     series: 3, reps: "8/j",   chargeTarget: "85",                                     ordre: 3 }),
+              exo({ nom: "Sprints 8sec max",         series: 8, reps: "8sec",  chargeTarget: "Max", unite: "", typeExercice: "cardio", ordre: 4 }),
+              exo({ nom: "Accélérations 20sec 85%",  series: 2, reps: "20sec", chargeTarget: "85%", unite: "", typeExercice: "cardio", ordre: 5 }),
             ]},
           },
 
           // ── SAMEDI — Footing Zone 2 ───────────────────────────────────────
           {
             nom: "Footing Zone 2", type: "cardio", freq: "1x/semaine", jour: "Samedi", lieu: "dehors",
-            note: "S4: 45min · S5: 48min · S6: 50min — quelques côtes légères en S4",
+            note: "S4-6: 45min allure conversationnelle",
             exercices: { create: [
               exo({ nom: "Footing zone 2", series: 1, reps: "45min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
             ]},
@@ -204,88 +195,82 @@ async function main() {
     },
   });
 
-  // ─── BLOC 3 — Puissance + Vitesse (S7-9) ──────────────────────────────────
+  // ─── BLOC 3 — Puissance (S7-9) · 85% 1RM ─────────────────────────────────
   await prisma.bloc.create({
     data: {
-      numero: 3, nom: "Puissance + Vitesse", semaines: "7-9", couleur: "#f97316",
+      numero: 3, nom: "Puissance", semaines: "7-9", couleur: "#f97316",
       seances: {
         create: [
 
-          // ── LUNDI — Force Maximale Haut ───────────────────────────────────
+          // ── LUNDI — Force Haut A ──────────────────────────────────────────
           {
-            nom: "Force Maximale Haut", type: "force", freq: "1x/semaine", jour: "Lundi", lieu: "salle",
-            note: "S7: Trac +5kg 4×6 · S8: 4×7 · S9: 4×7 +8kg — Explosivité max. Récup 3min",
+            nom: "Force Haut A", type: "force", freq: "1x/semaine", jour: "Lundi", lieu: "salle",
+            note: "Explosif max. S7:DC60×4 · S8:62×4 · S9:65×3 — Descente contrôlée, montée explosive. Récup 3min",
             exercices: { create: [
-              exo({ nom: "Tractions lestées prise large",     series: 4, reps: "6",         chargeTarget: "5",  unite: "kg (lest)",                            ordre: 1 }),
-              exo({ nom: "Développé haltères explosif",       series: 5, reps: "5",          chargeTarget: "20", unite: "kg/hal.",                             ordre: 2 }),
-              exo({ nom: "Rowing haltère unilatéral",         series: 5, reps: "6/côté",    chargeTarget: "20",                                               ordre: 3 }),
-              exo({ nom: "Push press KB explosif",            series: 4, reps: "5/côté",    chargeTarget: "24", unite: "kg (KB)",                             ordre: 4 }),
-              exo({ nom: "Dips lestés",                       series: 3, reps: "8",          chargeTarget: "5",  unite: "kg (lest)",                           ordre: 5 }),
-              exo({ nom: "Gainage cervical",                  series: 3, reps: "35sec",      chargeTarget: "PDC",unite: "sec",    typeExercice: "gainage",      ordre: 6 }),
+              exo({ nom: "1A. Développé couché",       series: 4, reps: "4",    chargeTarget: "60",   ordre: 1 }),
+              exo({ nom: "1B. Rowing barre",            series: 4, reps: "5",    chargeTarget: "55",   ordre: 2 }),
+              exo({ nom: "Tractions lestées larges",    series: 5, reps: "6",    chargeTarget: "5",    unite: "kg (lest)", ordre: 3 }),
+              exo({ nom: "3A. Développé militaire",     series: 3, reps: "5",    chargeTarget: "45",   ordre: 4 }),
+              exo({ nom: "3B. Face pulls poulie",       series: 3, reps: "15",   chargeTarget: "léger",unite: "",          ordre: 5 }),
+              exo({ nom: "Dips lestés",                 series: 3, reps: "5-6",  chargeTarget: "5",    unite: "kg (lest)", ordre: 6 }),
             ]},
           },
 
-          // ── MARDI — Force Maximale Bas ────────────────────────────────────
+          // ── MARDI — Force Bas A ───────────────────────────────────────────
           {
-            nom: "Force Maximale Bas", type: "force", freq: "1x/semaine", jour: "Mardi", lieu: "salle",
-            note: "S7: Bulg 2×18 · S8: 2×20 · S9: 2×20 5×5reps — Récup 3min. Charges maximales.",
+            nom: "Force Bas A", type: "force", freq: "1x/semaine", jour: "Mardi", lieu: "salle",
+            note: "Charges maximales — technique irréprochable. S7:SC70×3 · S8:75×3 · S9:80×3 — Récup 3min",
             exercices: { create: [
-              exo({ nom: "KB clean lourd ⚡",                 series: 5, reps: "4/côté",    chargeTarget: "24", unite: "kg (KB)", typeExercice: "olympique",    ordre: 1 }),
-              exo({ nom: "Bulgarian split squat lourd",       series: 5, reps: "6/jambe",   chargeTarget: "18", unite: "kg/hal.", isGenou: true,                ordre: 2 }),
-              exo({ nom: "KB swing max ⚡",                   series: 5, reps: "8",          chargeTarget: "24", unite: "kg (KB)", typeExercice: "olympique",    ordre: 3 }),
-              exo({ nom: "Single leg deadlift",               series: 4, reps: "6/jambe",   chargeTarget: "24", unite: "kg (KB)", isGenou: true,                ordre: 4 }),
-              exo({ nom: "Fentes lestées",                    series: 3, reps: "8/jambe",   chargeTarget: "18", unite: "kg/hal.",                              ordre: 5 }),
-              exo({ nom: "Farmer's carry max",                series: 3, reps: "20m",        chargeTarget: "44", unite: "kg total",                            ordre: 6 }),
+              exo({ nom: "Squat clean ⚡",           series: 4, reps: "3",    chargeTarget: "70",  typeExercice: "olympique",         ordre: 1 }),
+              exo({ nom: "Squat barre",               series: 4, reps: "4",    chargeTarget: "80",                                     ordre: 2 }),
+              exo({ nom: "Soulevé de terre",          series: 3, reps: "4",    chargeTarget: "100",                                    ordre: 3 }),
+              exo({ nom: "4A. Bulgarian split squat", series: 4, reps: "6/j",  chargeTarget: "18",  unite: "kg/hal.", isGenou: true,   ordre: 4 }),
+              exo({ nom: "4B. Leg press",             series: 4, reps: "8",    chargeTarget: "140",                                    ordre: 5 }),
             ]},
           },
 
-          // ── MERCREDI — Circuit Puissance Placage ──────────────────────────
+          // ── MERCREDI — Récup Active ───────────────────────────────────────
           {
-            nom: "Circuit Puissance Placage", type: "circuit", freq: "1x/semaine", jour: "Mercredi", lieu: "salle",
-            note: "4 tours — Récup 2min entre tours. Explosivité maximale à chaque répétition.",
+            nom: "Récup Active", type: "cardio", freq: "1x/semaine", jour: "Mercredi", lieu: "dehors",
+            note: "S7-9: 45min footing zone 2 + quelques accélérations légères en fin de S7",
             exercices: { create: [
-              exo({ nom: "KB cleans explosifs ⚡",            series: 4, reps: "4",          chargeTarget: "20", unite: "kg (KB)", typeExercice: "olympique",   ordre: 1 }),
-              exo({ nom: "Pompes explosives",                 series: 4, reps: "5",          chargeTarget: "PDC",unite: "reps",                               ordre: 2 }),
-              exo({ nom: "Squats sautés",                     series: 4, reps: "5",          chargeTarget: "PDC",unite: "reps",   typeExercice: "cardio",      ordre: 3 }),
-              exo({ nom: "Navettes 20sec",                    series: 4, reps: "20sec",       chargeTarget: "Max",unite: "",       typeExercice: "cardio",      ordre: 4 }),
-              exo({ nom: "Tractions explosives",              series: 4, reps: "8",          chargeTarget: "PDC",unite: "reps",                               ordre: 5 }),
+              exo({ nom: "Footing zone 2", series: 1, reps: "45min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
             ]},
           },
 
-          // ── JEUDI — Puissance Haut + Gainage Rugby ───────────────────────
+          // ── JEUDI — Force Haut B ──────────────────────────────────────────
           {
-            nom: "Puissance Haut + Gainage Rugby", type: "force", freq: "1x/semaine", jour: "Jeudi", lieu: "salle",
-            note: "S7: Trac +5kg 4×6, Crunch 10kg · S8: 4×7, Crunch 12kg · S9: 4×7 +8kg — Récup 2min",
+            nom: "Force Haut B", type: "force", freq: "1x/semaine", jour: "Jeudi", lieu: "salle",
+            note: "Explosif. S7:DCPS55×6 · S8:57×6 · S9:60×5 — Tractions +8kg. Récup 2-3min",
             exercices: { create: [
-              exo({ nom: "Tractions lestées prise serrée",   series: 4, reps: "6",         chargeTarget: "5",  unite: "kg (lest)",                            ordre: 1 }),
-              exo({ nom: "Développé haltères explosif",       series: 4, reps: "5",          chargeTarget: "20", unite: "kg/hal.",                             ordre: 2 }),
-              exo({ nom: "Rowing KB explosif",                series: 4, reps: "5/côté",    chargeTarget: "24", unite: "kg (KB)",                             ordre: 3 }),
-              exo({ nom: "KB press explosif",                 series: 4, reps: "4/côté",    chargeTarget: "24", unite: "kg (KB)",                             ordre: 4 }),
-              exo({ nom: "Gainage anti-rotation",             series: 3, reps: "30sec/côté",chargeTarget: "PDC",unite: "sec",    typeExercice: "gainage",      ordre: 5 }),
-              exo({ nom: "Crunch torsion lesté",              series: 3, reps: "15",         chargeTarget: "10",                                              ordre: 6 }),
-              exo({ nom: "Turkish get-up",                    series: 2, reps: "3/côté",    chargeTarget: "24", unite: "kg (KB)",                             ordre: 7 }),
+              exo({ nom: "1A. Dév. couché prise serrée", series: 4, reps: "6",   chargeTarget: "55",  ordre: 1 }),
+              exo({ nom: "1B. Tractions lestées serrées", series: 4, reps: "6",  chargeTarget: "8",   unite: "kg (lest)", ordre: 2 }),
+              exo({ nom: "Push press",                    series: 5, reps: "3",   chargeTarget: "60",  ordre: 3 }),
+              exo({ nom: "3A. Tirage vertical poulie",    series: 3, reps: "8",   chargeTarget: "55",  ordre: 4 }),
+              exo({ nom: "Curl haltères",                 series: 3, reps: "6",   chargeTarget: "18",  unite: "kg/hal.", ordre: 5 }),
             ]},
           },
 
-          // ── VENDREDI — Vitesse Maximale ───────────────────────────────────
+          // ── VENDREDI — Force Bas B + Sprints ─────────────────────────────
           {
-            nom: "Vitesse Maximale", type: "cardio", freq: "1x/semaine", jour: "Vendredi", lieu: "dehors",
-            note: "S7: 5×6sec + 4×10sec + 3×20sec · S8: 6×6sec + 5×10sec + 4×20sec · S9: 6×6sec + 5×10sec + 5×20sec",
+            nom: "Force Bas B + Sprints", type: "force", freq: "1x/semaine", jour: "Vendredi", lieu: "salle",
+            note: "S7:5×6sec+4×10sec+3×20sec · S8:6×6sec+5×10sec+4×20sec · S9:6×6sec+5×10sec+5×20sec (90% VMA)",
             exercices: { create: [
-              exo({ nom: "Échauffement progressif",           series: 1, reps: "15min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio",          ordre: 1 }),
-              exo({ nom: "Sprints 6sec max",                  series: 5, reps: "6sec",   chargeTarget: "Max",   unite: "",    typeExercice: "cardio",          ordre: 2 }),
-              exo({ nom: "Accélérations progressives 10sec",  series: 4, reps: "10sec",  chargeTarget: "85%",   unite: "",    typeExercice: "cardio",          ordre: 3 }),
-              exo({ nom: "Accélérations 20sec à 90%",        series: 3, reps: "20sec",  chargeTarget: "90%",   unite: "",    typeExercice: "cardio",          ordre: 4 }),
-              exo({ nom: "Retour calme",                      series: 1, reps: "10min",  chargeTarget: "Zone 1",unite: "min", typeExercice: "cardio",          ordre: 5 }),
+              exo({ nom: "Squat clean ⚡",             series: 3, reps: "3",    chargeTarget: "70",  typeExercice: "olympique",         ordre: 1 }),
+              exo({ nom: "Romanian deadlift",           series: 3, reps: "5",    chargeTarget: "95",  isGenou: true,                     ordre: 2 }),
+              exo({ nom: "Leg press unilatéral",        series: 3, reps: "6/j",  chargeTarget: "100",                                    ordre: 3 }),
+              exo({ nom: "Sprints 6sec max",            series: 5, reps: "6sec", chargeTarget: "Max", unite: "", typeExercice: "cardio", ordre: 4 }),
+              exo({ nom: "Accélérations 10sec prog.",   series: 4, reps: "10sec",chargeTarget: "85%", unite: "", typeExercice: "cardio", ordre: 5 }),
+              exo({ nom: "Accélérations 20sec 90%",    series: 3, reps: "20sec",chargeTarget: "90%", unite: "", typeExercice: "cardio", ordre: 6 }),
             ]},
           },
 
           // ── SAMEDI — Footing Zone 2 ───────────────────────────────────────
           {
             nom: "Footing Zone 2", type: "cardio", freq: "1x/semaine", jour: "Samedi", lieu: "dehors",
-            note: "S7: 50min · S8: 52min · S9: 55min — quelques accélérations courtes en fin de S7",
+            note: "S7-9: 55min allure conversationnelle + quelques accélérations courtes en fin",
             exercices: { create: [
-              exo({ nom: "Footing zone 2", series: 1, reps: "50min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
+              exo({ nom: "Footing zone 2", series: 1, reps: "55min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
             ]},
           },
 
@@ -294,8 +279,8 @@ async function main() {
     },
   });
 
-  // ─── BLOC 4 — Affûtage (S10) ───────────────────────────────────────────────
-  // Volume ÷ 2, intensité maintenue — arriver frais en S11
+  // ─── BLOC 4 — Affûtage (S10) · 60% 1RM ───────────────────────────────────
+  // Volume ÷ 2 — Intensité maintenue — Arriver frais
   await prisma.bloc.create({
     data: {
       numero: 4, nom: "Affûtage", semaines: "10", couleur: "#818cf8",
@@ -305,59 +290,64 @@ async function main() {
           // ── LUNDI — Force maintien haut ───────────────────────────────────
           {
             nom: "Force maintien haut", type: "force", freq: "1x", jour: "Lundi", lieu: "salle",
-            note: "Volume ÷ 2 — Intensité maintenue. Récup 2min entre séries.",
+            note: "Volume ÷ 2 — Intensité maintenue. Récup 2min.",
             exercices: { create: [
-              exo({ nom: "Tractions lestées prise large",     series: 3, reps: "5",         chargeTarget: "5",  unite: "kg (lest)",  ordre: 1 }),
-              exo({ nom: "Développé haltères sol",            series: 3, reps: "5",          chargeTarget: "16", unite: "kg/hal.",    ordre: 2 }),
-              exo({ nom: "Rowing haltère unilatéral",         series: 3, reps: "6/côté",    chargeTarget: "18",                      ordre: 3 }),
-              exo({ nom: "Push press KB",                     series: 2, reps: "5/côté",    chargeTarget: "20", unite: "kg (KB)",    ordre: 4 }),
+              exo({ nom: "1A. Développé couché",       series: 3, reps: "4",   chargeTarget: "42",    ordre: 1 }),
+              exo({ nom: "1B. Rowing barre",            series: 3, reps: "5",   chargeTarget: "40",    ordre: 2 }),
+              exo({ nom: "Tractions lestées",           series: 3, reps: "5",   chargeTarget: "5",     unite: "kg (lest)", ordre: 3 }),
+              exo({ nom: "3A. Développé militaire",     series: 2, reps: "5",   chargeTarget: "40",    ordre: 4 }),
+              exo({ nom: "3B. Face pulls poulie",       series: 2, reps: "15",  chargeTarget: "léger", unite: "",          ordre: 5 }),
+              exo({ nom: "Dips",                        series: 2, reps: "8",   chargeTarget: "PDC",   unite: "reps",      ordre: 6 }),
             ]},
           },
 
           // ── MARDI — Force maintien bas ────────────────────────────────────
           {
             nom: "Force maintien bas", type: "force", freq: "1x", jour: "Mardi", lieu: "salle",
-            note: "Volume réduit — pas de performance, juste maintenir. Récup 2min.",
+            note: "Bulgarian SS supprimé en S10. Volume réduit — pas de perf, maintenir fraîcheur. Récup 2min.",
             exercices: { create: [
-              exo({ nom: "KB clean ⚡",                       series: 3, reps: "3/côté",    chargeTarget: "20", unite: "kg (KB)", typeExercice: "olympique",    ordre: 1 }),
-              exo({ nom: "Bulgarian split squat",             series: 3, reps: "5/jambe",   chargeTarget: "14", unite: "kg/hal.", isGenou: true,                ordre: 2 }),
-              exo({ nom: "KB swing ⚡",                       series: 3, reps: "8",          chargeTarget: "24", unite: "kg (KB)", typeExercice: "olympique",    ordre: 3 }),
-              exo({ nom: "Romanian deadlift haltères",        series: 2, reps: "8",          chargeTarget: "16", unite: "kg/hal.", isGenou: true,                ordre: 4 }),
+              exo({ nom: "Squat clean ⚡",   series: 3, reps: "3",   chargeTarget: "55",  typeExercice: "olympique", ordre: 1 }),
+              exo({ nom: "Squat barre",       series: 3, reps: "4",   chargeTarget: "57",                             ordre: 2 }),
+              exo({ nom: "Soulevé de terre",  series: 2, reps: "4",   chargeTarget: "72",                             ordre: 3 }),
+              exo({ nom: "Leg press",         series: 3, reps: "10",  chargeTarget: "100",                            ordre: 4 }),
             ]},
           },
 
           // ── MERCREDI — Cardio léger ───────────────────────────────────────
           {
             nom: "Cardio léger", type: "cardio", freq: "1x", jour: "Mercredi", lieu: "dehors",
-            note: "Récupération active — 25min zone 2 allure conversationnelle",
+            note: "S10: 25min footing zone 2 léger — récupération active",
             exercices: { create: [
               exo({ nom: "Footing zone 2", series: 1, reps: "25min", chargeTarget: "Zone 2", unite: "min", typeExercice: "cardio", ordre: 1 }),
             ]},
           },
 
-          // ── JEUDI — Mobilité + Récup active ──────────────────────────────
+          // ── JEUDI — Force maintien haut B ────────────────────────────────
           {
-            nom: "Mobilité + Récup active", type: "mobilite", freq: "1x", jour: "Jeudi", lieu: "salle",
-            note: "20min max — hanches, épaules, thoracique",
+            nom: "Force maintien haut B", type: "force", freq: "1x", jour: "Jeudi", lieu: "salle",
+            note: "Volume ÷ 2. Récup 2min.",
             exercices: { create: [
-              exo({ nom: "Étirements hanches",    series: 3, reps: "45sec/côté", chargeTarget: "PDC", unite: "sec", typeExercice: "gainage", ordre: 1 }),
-              exo({ nom: "Étirements épaules",    series: 3, reps: "45sec/côté", chargeTarget: "PDC", unite: "sec", typeExercice: "gainage", ordre: 2 }),
-              exo({ nom: "Mobilité thoracique",   series: 3, reps: "10",          chargeTarget: "PDC", unite: "reps",typeExercice: "gainage", ordre: 3 }),
+              exo({ nom: "1A. Dév. couché prise serrée", series: 3, reps: "8",  chargeTarget: "40",  ordre: 1 }),
+              exo({ nom: "1B. Tractions lestées",         series: 3, reps: "8",  chargeTarget: "5",   unite: "kg (lest)", ordre: 2 }),
+              exo({ nom: "Push press",                     series: 3, reps: "4",  chargeTarget: "50",  ordre: 3 }),
+              exo({ nom: "3A. Tirage vertical poulie",     series: 2, reps: "12", chargeTarget: "40",  ordre: 4 }),
+              exo({ nom: "Curl haltères",                  series: 2, reps: "8",  chargeTarget: "12",  unite: "kg/hal.", ordre: 5 }),
             ]},
           },
 
           // ── VENDREDI — Sprints réduits ────────────────────────────────────
           {
-            nom: "Sprints réduits", type: "cardio", freq: "1x", jour: "Vendredi", lieu: "dehors",
-            note: "Arriver frais — volume minimal. 10min échauffement → 5×6sec max → 10min retour calme.",
+            nom: "Sprints réduits", type: "force", freq: "1x", jour: "Vendredi", lieu: "salle",
+            note: "Muscu légère + 5×6sec sprint max / 2min récup. Arriver frais.",
             exercices: { create: [
-              exo({ nom: "Échauffement",    series: 1, reps: "10min", chargeTarget: "Zone 2",unite: "min",typeExercice: "cardio", ordre: 1 }),
-              exo({ nom: "Sprints 6sec max",series: 5, reps: "6sec",  chargeTarget: "Max",   unite: "",   typeExercice: "cardio", ordre: 2 }),
-              exo({ nom: "Retour calme",    series: 1, reps: "10min", chargeTarget: "Zone 1",unite: "min",typeExercice: "cardio", ordre: 3 }),
+              exo({ nom: "Squat clean ⚡",         series: 2, reps: "3",    chargeTarget: "55",  typeExercice: "olympique",         ordre: 1 }),
+              exo({ nom: "Romanian deadlift",       series: 2, reps: "4",    chargeTarget: "70",  isGenou: true,                     ordre: 2 }),
+              exo({ nom: "Leg press unilatéral",    series: 2, reps: "8/j",  chargeTarget: "80",                                     ordre: 3 }),
+              exo({ nom: "Sprints 6sec max",        series: 5, reps: "6sec", chargeTarget: "Max", unite: "", typeExercice: "cardio", ordre: 4 }),
             ]},
           },
 
-          // Samedi : Repos complet — pas de séance créée
+          // Samedi : Repos complet — pas de séance
 
         ],
       },
@@ -365,7 +355,7 @@ async function main() {
   });
 
   const count = await prisma.seance.count();
-  console.log(`✅ Seed terminé — Programme domicile 10 semaines · 4 blocs · ${count} séances`);
+  console.log(`✅ Seed terminé — Programme salle 10 semaines · 4 blocs · ${count} séances`);
 }
 
 main()

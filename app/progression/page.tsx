@@ -41,11 +41,11 @@ export default function ProgressionPage() {
     <div className="min-h-screen px-4 pt-6 pb-24 max-w-lg mx-auto">
       <div className="mb-6 flex items-center gap-2">
         <TrendingUp className="h-5 w-5 text-orange-400" />
-        <h1 className="text-xl font-bold text-zinc-100">Progression</h1>
+        <h1 className="text-xl font-bold text-app-fg1">Progression</h1>
       </div>
 
       {stats.exercices.length === 0 ? (
-        <div className="text-center py-16 text-zinc-500 text-sm">
+        <div className="text-center py-16 text-app-fg3 text-sm">
           Aucune donnée — commence tes séances !
         </div>
       ) : (
@@ -59,7 +59,7 @@ export default function ProgressionPage() {
                 className={`flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium border transition-all ${
                   selected === e.nom
                     ? "border-orange-500/60 bg-orange-500/20 text-orange-400"
-                    : "border-zinc-800 text-zinc-500 bg-zinc-900"
+                    : "border-app-edge text-app-fg3 bg-app-card"
                 }`}
               >
                 {e.nom}
@@ -69,18 +69,18 @@ export default function ProgressionPage() {
 
           {/* Charge chart */}
           {selectedData && selectedData.data.length === 1 && (
-            <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4 flex items-center justify-between">
+            <div className="rounded-xl bg-app-card border border-app-edge p-4 mb-4 flex items-center justify-between">
               <div>
-                <p className="text-xs text-zinc-500 font-semibold uppercase tracking-wider mb-1">{selected}</p>
-                <p className="text-2xl font-bold text-orange-400">{selectedData.data[0].charge} <span className="text-sm text-zinc-500">kg</span></p>
-                <p className="text-xs text-zinc-600 mt-0.5">{selectedData.data[0].date} · {selectedData.data[0].reps} reps</p>
+                <p className="text-xs text-app-fg3 font-semibold uppercase tracking-wider mb-1">{selected}</p>
+                <p className="text-2xl font-bold text-orange-400">{selectedData.data[0].charge} <span className="text-sm text-app-fg3">kg</span></p>
+                <p className="text-xs text-app-fg3 mt-0.5">{selectedData.data[0].date} · {selectedData.data[0].reps} reps</p>
               </div>
-              <p className="text-xs text-zinc-600 text-right">Refais la séance<br/>pour voir la courbe</p>
+              <p className="text-xs text-app-fg3 text-right">Refais la séance<br/>pour voir la courbe</p>
             </div>
           )}
           {selectedData && selectedData.data.length > 1 && (
-            <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-              <p className="text-xs text-zinc-500 mb-3 font-semibold uppercase tracking-wider">{selected} — Charge (kg)</p>
+            <div className="rounded-xl bg-app-card border border-app-edge p-4 mb-4">
+              <p className="text-xs text-app-fg3 mb-3 font-semibold uppercase tracking-wider">{selected} — Charge (kg)</p>
               <ResponsiveContainer width="100%" height={160}>
                 <LineChart data={selectedData.data}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
@@ -98,8 +98,8 @@ export default function ProgressionPage() {
 
           {/* Genou chart */}
           {stats.genouData.length > 1 && (
-            <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-              <p className="text-xs text-zinc-500 mb-3 font-semibold uppercase tracking-wider">🦵 Douleur genou</p>
+            <div className="rounded-xl bg-app-card border border-app-edge p-4 mb-4">
+              <p className="text-xs text-app-fg3 mb-3 font-semibold uppercase tracking-wider">🦵 Douleur genou</p>
               <ResponsiveContainer width="100%" height={120}>
                 <LineChart data={stats.genouData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
@@ -116,8 +116,8 @@ export default function ProgressionPage() {
 
           {/* Fatigue chart */}
           {stats.fatigueData.length > 1 && (
-            <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
-              <p className="text-xs text-zinc-500 mb-3 font-semibold uppercase tracking-wider">💪 Fatigue globale</p>
+            <div className="rounded-xl bg-app-card border border-app-edge p-4">
+              <p className="text-xs text-app-fg3 mb-3 font-semibold uppercase tracking-wider">💪 Fatigue globale</p>
               <ResponsiveContainer width="100%" height={120}>
                 <LineChart data={stats.fatigueData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />

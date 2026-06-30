@@ -24,14 +24,14 @@ export default async function HistoriquePage() {
   return (
     <div className="min-h-screen px-4 pt-6 pb-24 max-w-lg mx-auto">
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-zinc-100">Historique</h1>
-        <p className="text-xs text-zinc-500 mt-0.5">{logs.length} séance{logs.length !== 1 ? "s" : ""} enregistrée{logs.length !== 1 ? "s" : ""}</p>
+        <h1 className="text-xl font-bold text-app-fg1">Historique</h1>
+        <p className="text-xs text-app-fg3 mt-0.5">{logs.length} séance{logs.length !== 1 ? "s" : ""} enregistrée{logs.length !== 1 ? "s" : ""}</p>
       </div>
 
       {logs.length === 0 ? (
-        <div className="text-center py-20 rounded-xl bg-zinc-900 border border-zinc-800">
-          <p className="text-zinc-400 text-sm font-medium">Aucune séance enregistrée</p>
-          <p className="text-zinc-600 text-xs mt-1 mb-4">Complète ta première séance pour voir l'historique</p>
+        <div className="text-center py-20 rounded-xl bg-app-card border border-app-edge">
+          <p className="text-app-fg2 text-sm font-medium">Aucune séance enregistrée</p>
+          <p className="text-app-fg3 text-xs mt-1 mb-4">Complète ta première séance pour voir l'historique</p>
           <Link href="/programme" className="inline-block text-orange-400 text-sm font-medium border border-orange-500/30 bg-orange-500/10 rounded-lg px-4 py-2">
             Voir le programme →
           </Link>
@@ -40,26 +40,26 @@ export default async function HistoriquePage() {
         <div className="space-y-2">
           {logs.map((log) => (
             <Link key={log.id} href={`/historique/${log.id}`} className="block">
-              <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 hover:border-zinc-600 transition-colors">
+              <div className="rounded-xl bg-app-card border border-app-edge p-4 hover:border-app-fg3 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className={`h-2.5 w-2.5 rounded-full shrink-0 ${DOT_COLORS[log.seance.bloc.couleur] ?? "bg-zinc-400"}`} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-zinc-100 truncate">{log.seance.nom}</p>
-                    <p className="text-xs text-zinc-500 mt-0.5 capitalize">
+                    <p className="text-sm font-semibold text-app-fg1 truncate">{log.seance.nom}</p>
+                    <p className="text-xs text-app-fg3 mt-0.5 capitalize">
                       {new Date(log.date).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <DeleteLogButton logId={log.id} seanceId={log.seanceId} />
-                    <ChevronRight className="h-4 w-4 text-zinc-600" />
+                    <ChevronRight className="h-4 w-4 text-app-fg3" />
                   </div>
                 </div>
-                <div className="mt-2 flex items-center gap-3 text-xs text-zinc-500 pl-5">
+                <div className="mt-2 flex items-center gap-3 text-xs text-app-fg3 pl-5">
                   {log.genouDouleur > 0 && <span className="text-red-400">🦵 {log.genouDouleur}/3</span>}
                   <span>💪 {log.fatigue}/5</span>
                   <span>{log.series.length} séries</span>
                   {log.series.length > 0 && (
-                    <span className="text-zinc-600">· {Math.round(log.series.reduce((acc) => acc + 1, 0))} sets</span>
+                    <span className="text-app-fg3">· {Math.round(log.series.reduce((acc) => acc + 1, 0))} sets</span>
                   )}
                 </div>
               </div>

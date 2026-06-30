@@ -82,42 +82,42 @@ export default async function DashboardPage() {
             <Dumbbell className="h-5 w-5 text-white stroke-2" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-zinc-100">FitForge</h1>
-            <p className="text-xs text-zinc-500">Préparation Rugby — 10 semaines</p>
+            <h1 className="text-xl font-bold text-app-fg1">FitForge</h1>
+            <p className="text-xs text-app-fg3">Préparation Rugby — 10 semaines</p>
           </div>
         </div>
       </div>
 
       {/* Stats rapides */}
       <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3 text-center">
+        <div className="rounded-xl bg-app-card border border-app-edge p-3 text-center">
           <p className="text-2xl font-bold text-orange-400">{totalLogs}</p>
-          <p className="text-[10px] text-zinc-500 mt-0.5">Séances</p>
+          <p className="text-[10px] text-app-fg3 mt-0.5">Séances</p>
         </div>
-        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3 text-center">
+        <div className="rounded-xl bg-app-card border border-app-edge p-3 text-center">
           <p className="text-2xl font-bold text-green-400">{totalSeances}</p>
-          <p className="text-[10px] text-zinc-500 mt-0.5">Au programme</p>
+          <p className="text-[10px] text-app-fg3 mt-0.5">Au programme</p>
         </div>
-        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3 text-center">
-          <p className="text-2xl font-bold text-zinc-100">{lastLog ? lastLog.fatigue : "—"}<span className="text-sm text-zinc-500">/5</span></p>
-          <p className="text-[10px] text-zinc-500 mt-0.5">Dernière fatigue</p>
+        <div className="rounded-xl bg-app-card border border-app-edge p-3 text-center">
+          <p className="text-2xl font-bold text-app-fg1">{lastLog ? lastLog.fatigue : "—"}<span className="text-sm text-app-fg3">/5</span></p>
+          <p className="text-[10px] text-app-fg3 mt-0.5">Dernière fatigue</p>
         </div>
       </div>
 
       {/* Prochaine séance */}
       {prochaine && (
         <div className="mb-6">
-          <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Prochaine séance</h2>
+          <h2 className="text-xs font-semibold text-app-fg3 uppercase tracking-wider mb-2">Prochaine séance</h2>
           <Link href={`/seance/${prochaine.seance.id}`}>
-            <div className={`rounded-xl border p-4 ${BLOC_COLORS[prochaine.bloc.couleur] ?? "border-zinc-700"} hover:opacity-90 transition-opacity`}>
+            <div className={`rounded-xl border p-4 ${BLOC_COLORS[prochaine.bloc.couleur] ?? "border-app-edge"} hover:opacity-90 transition-opacity`}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-medium opacity-70">Bloc {prochaine.bloc.numero} — {prochaine.bloc.nom}</span>
                 <Zap className="h-4 w-4 opacity-70" />
               </div>
-              <p className="font-bold text-zinc-100 text-lg">{prochaine.seance.nom}</p>
-              <p className="text-xs text-zinc-400 mt-1">{prochaine.seance.freq}</p>
+              <p className="font-bold text-app-fg1 text-lg">{prochaine.seance.nom}</p>
+              <p className="text-xs text-app-fg2 mt-1">{prochaine.seance.freq}</p>
               {prochaine.seance.note && (
-                <p className="text-xs text-zinc-500 mt-1 line-clamp-1">{prochaine.seance.note}</p>
+                <p className="text-xs text-app-fg3 mt-1 line-clamp-1">{prochaine.seance.note}</p>
               )}
               <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold opacity-80">
                 <Calendar className="h-3.5 w-3.5" />
@@ -138,26 +138,26 @@ export default async function DashboardPage() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-orange-400">Coach Claude</p>
               {lastAnalyse ? (
-                <p className="text-xs text-zinc-400 truncate mt-0.5">
+                <p className="text-xs text-app-fg2 truncate mt-0.5">
                   Dernière analyse — {lastAnalyse.seance.nom} · {new Date(lastAnalyse.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}
                 </p>
               ) : (
-                <p className="text-xs text-zinc-500 mt-0.5">Pose-moi une question sur ton entraînement</p>
+                <p className="text-xs text-app-fg3 mt-0.5">Pose-moi une question sur ton entraînement</p>
               )}
             </div>
             <span className="text-xs text-orange-400 font-medium shrink-0">Ouvrir →</span>
           </div>
         </Link>
         <Link href="/infos">
-          <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 flex items-center gap-3 hover:border-zinc-600 transition-colors">
-            <div className="h-9 w-9 rounded-xl bg-zinc-800 flex items-center justify-center shrink-0">
-              <BookOpen className="h-5 w-5 text-zinc-400" />
+          <div className="rounded-xl border border-app-edge bg-app-card p-4 flex items-center gap-3 hover:border-app-fg3 transition-colors">
+            <div className="h-9 w-9 rounded-xl bg-app-deep flex items-center justify-center shrink-0">
+              <BookOpen className="h-5 w-5 text-app-fg2" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-zinc-200">Infos & Conseils</p>
-              <p className="text-xs text-zinc-500 mt-0.5">Nutrition · Gestion des charges · Variantes</p>
+              <p className="text-sm font-semibold text-app-fg1">Infos & Conseils</p>
+              <p className="text-xs text-app-fg3 mt-0.5">Nutrition · Gestion des charges · Variantes</p>
             </div>
-            <span className="text-xs text-zinc-500 shrink-0">Voir →</span>
+            <span className="text-xs text-app-fg3 shrink-0">Voir →</span>
           </div>
         </Link>
       </div>
@@ -165,11 +165,11 @@ export default async function DashboardPage() {
       {/* Suivi genou */}
       {genouLogs.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+          <h2 className="text-xs font-semibold text-app-fg3 uppercase tracking-wider mb-2 flex items-center gap-1.5">
             <Heart className="h-3.5 w-3.5 text-red-400" />
             Douleur genou (14 dernières séances)
           </h2>
-          <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3">
+          <div className="rounded-xl bg-app-card border border-app-edge p-3">
             <div className="flex items-end gap-1.5 h-10">
               {genouLogs.slice().reverse().map((log, i) => {
                 const heights = ["h-1", "h-3", "h-5", "h-8"];
@@ -181,7 +181,7 @@ export default async function DashboardPage() {
                 );
               })}
             </div>
-            <div className="flex justify-between mt-2 text-[9px] text-zinc-600">
+            <div className="flex justify-between mt-2 text-[9px] text-app-fg3">
               <span>Il y a {genouLogs.length} séances</span>
               <span>Dernière</span>
             </div>
@@ -191,7 +191,7 @@ export default async function DashboardPage() {
 
       {/* Programme blocs */}
       <div className="mb-6">
-        <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+        <h2 className="text-xs font-semibold text-app-fg3 uppercase tracking-wider mb-2 flex items-center gap-1.5">
           <TrendingUp className="h-3.5 w-3.5" />
           Programme
         </h2>
@@ -205,17 +205,17 @@ export default async function DashboardPage() {
       {/* Dernières séances */}
       {recentLogs.length > 0 && (
         <div>
-          <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Historique récent</h2>
+          <h2 className="text-xs font-semibold text-app-fg3 uppercase tracking-wider mb-2">Historique récent</h2>
           <div className="space-y-2">
             {recentLogs.map((log) => (
               <Link key={log.id} href={`/historique/${log.id}`}>
-                <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3 flex items-center gap-3 hover:border-zinc-600 transition-colors">
+                <div className="rounded-xl bg-app-card border border-app-edge p-3 flex items-center gap-3 hover:border-app-fg3 transition-colors">
                   <div className={`h-2 w-2 rounded-full shrink-0 ${getBlocDot(log.seance.bloc.couleur)}`} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-zinc-200 truncate">{log.seance.nom}</p>
-                    <p className="text-xs text-zinc-500">{new Date(log.date).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })}</p>
+                    <p className="text-sm font-medium text-app-fg1 truncate">{log.seance.nom}</p>
+                    <p className="text-xs text-app-fg3">{new Date(log.date).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })}</p>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-zinc-500">
+                  <div className="flex items-center gap-2 text-xs text-app-fg3">
                     {log.genouDouleur > 0 && <span className="text-red-400">🦵 {log.genouDouleur}</span>}
                     <span>💪 {log.fatigue}/5</span>
                   </div>

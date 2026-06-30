@@ -36,7 +36,7 @@ export function DeleteLogButton({ logId, seanceId }: { logId: string; seanceId: 
       className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg border transition-all disabled:opacity-40 ${
         confirm
           ? "border-red-500/50 bg-red-500/10 text-red-400"
-          : "border-zinc-700 text-zinc-600 hover:border-red-500/40 hover:text-red-400"
+          : "border-app-edge text-app-fg3 hover:border-red-500/40 hover:text-red-400"
       }`}
     >
       {loading ? (

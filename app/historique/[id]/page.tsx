@@ -40,12 +40,12 @@ export default async function LogDetailPage({ params }: { params: Promise<{ id: 
   return (
     <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
       <div className="flex items-center gap-3 mb-6">
-        <Link href="/historique" className="flex items-center justify-center h-8 w-8 rounded-lg bg-zinc-900 border border-zinc-800">
-          <ChevronLeft className="h-4 w-4 text-zinc-400" />
+        <Link href="/historique" className="flex items-center justify-center h-8 w-8 rounded-lg bg-app-card border border-app-edge">
+          <ChevronLeft className="h-4 w-4 text-app-fg2" />
         </Link>
         <div>
-          <h1 className="text-lg font-bold text-zinc-100">{log.seance.nom}</h1>
-          <p className="text-xs text-zinc-500">
+          <h1 className="text-lg font-bold text-app-fg1">{log.seance.nom}</h1>
+          <p className="text-xs text-app-fg3">
             {new Date(log.date).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
           </p>
         </div>
@@ -53,20 +53,20 @@ export default async function LogDetailPage({ params }: { params: Promise<{ id: 
 
       {/* Bilan */}
       <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3">
-          <p className="text-xs text-zinc-500 mb-1">Douleur genou</p>
+        <div className="rounded-xl bg-app-card border border-app-edge p-3">
+          <p className="text-xs text-app-fg3 mb-1">Douleur genou</p>
           <p className={`text-xl font-bold ${log.genouDouleur === 0 ? "text-green-400" : log.genouDouleur === 1 ? "text-yellow-400" : "text-red-400"}`}>
             {log.genouDouleur}/3
           </p>
         </div>
-        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3">
-          <p className="text-xs text-zinc-500 mb-1">Fatigue</p>
-          <p className="text-xl font-bold text-zinc-100">{log.fatigue}/5</p>
+        <div className="rounded-xl bg-app-card border border-app-edge p-3">
+          <p className="text-xs text-app-fg3 mb-1">Fatigue</p>
+          <p className="text-xl font-bold text-app-fg1">{log.fatigue}/5</p>
         </div>
       </div>
 
       {log.noteLibre && (
-        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-3 mb-6 text-sm text-zinc-300">
+        <div className="rounded-xl bg-app-card border border-app-edge p-3 mb-6 text-sm text-app-fg2">
           {log.noteLibre}
         </div>
       )}
@@ -76,16 +76,16 @@ export default async function LogDetailPage({ params }: { params: Promise<{ id: 
         {Object.entries(byExo).map(([, seriesList]) => {
           const exo = seriesList[0].exercice;
           return (
-            <div key={exo.id} className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+            <div key={exo.id} className="rounded-xl bg-app-card border border-app-edge p-4">
               <div className="flex items-center gap-2 mb-3">
-                <p className="font-semibold text-zinc-200 text-sm">{exo.nom}</p>
+                <p className="font-semibold text-app-fg1 text-sm">{exo.nom}</p>
                 {exo.isGenou && <AlertTriangle className="h-3.5 w-3.5 text-red-400" />}
               </div>
               <div className="space-y-1.5">
                 {seriesList.map((s) => (
                   <div key={s.id} className="flex items-center gap-2 text-sm">
-                    <span className="text-zinc-600 text-xs w-5">#{s.numeroSerie}</span>
-                    <span className="text-zinc-300 flex-1">{s.chargeReelle}{exo.unite} × {s.repsReelles}</span>
+                    <span className="text-app-fg3 text-xs w-5">#{s.numeroSerie}</span>
+                    <span className="text-app-fg2 flex-1">{s.chargeReelle}{exo.unite} × {s.repsReelles}</span>
                     <span className={`text-xs px-2 py-0.5 rounded border ${RESSENTI_STYLES[s.ressenti] ?? ""}`}>{s.ressenti}</span>
                   </div>
                 ))}
@@ -98,7 +98,7 @@ export default async function LogDetailPage({ params }: { params: Promise<{ id: 
       {/* Analyse Claude */}
       {analyseData && (
         <div className="space-y-3">
-          <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Analyse Claude</h2>
+          <h2 className="text-xs font-semibold text-app-fg3 uppercase tracking-wider">Analyse Claude</h2>
           {analyseData.alertes && analyseData.alertes.length > 0 && (
             <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-3">
               {analyseData.alertes.map((a, i) => (
@@ -109,17 +109,17 @@ export default async function LogDetailPage({ params }: { params: Promise<{ id: 
               ))}
             </div>
           )}
-          <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
-            <p className="text-sm text-zinc-200 leading-relaxed">{analyseData.analyse}</p>
+          <div className="rounded-xl bg-app-card border border-app-edge p-4">
+            <p className="text-sm text-app-fg1 leading-relaxed">{analyseData.analyse}</p>
           </div>
           {analyseData.actions && (analyseData.actions as unknown[]).length > 0 && (
-            <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
-              <p className="text-xs text-zinc-500 mb-2 font-semibold uppercase tracking-wider">Actions appliquées</p>
+            <div className="rounded-xl bg-app-card border border-app-edge p-4">
+              <p className="text-xs text-app-fg3 mb-2 font-semibold uppercase tracking-wider">Actions appliquées</p>
               <div className="space-y-1.5">
                 {(analyseData.actions as Array<{ type: string; raison: string }>).map((action, i) => (
                   <div key={i} className="flex items-start gap-2 text-xs">
                     <span className="text-orange-400 font-mono bg-orange-500/10 rounded px-1.5 py-0.5 flex-shrink-0">{action.type}</span>
-                    <span className="text-zinc-400">{action.raison}</span>
+                    <span className="text-app-fg2">{action.raison}</span>
                   </div>
                 ))}
               </div>
